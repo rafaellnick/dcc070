@@ -148,3 +148,42 @@ exit:  add $v0, $s0, $zero #copia i para v0
        lw $s0, 0($sp)
        addi $sp, $sp, 16
        jr $ra
+
+
+#Transforme o seguinte código C em assembly mips:
+int soma(int a, int b){return a+b;}
+int reduz(int v[], int size){
+    int resultado=0, i;
+    for(i=0; i<size;i++) resultado=soma(resultado, v[i]);
+    return resultado;
+}
+
+soma: add $v0, $a0, $a1 #a+b
+      jr $ra
+
+reduz: addi $sp, $sp, -20 #espaço na pilha para 5 registradores
+       sw $ra, 16($sp) # salva ra
+       sw $s3, 12($sp) #salva s3
+       sw $s2, 8($sp) #salva s2
+       sw $s1, 4($sp) #salva s1
+       sw $s0, 0($sp) # salva s0
+       add $s2, $a0, $zero # copia a0 para s2 (salva v)
+       add $s3, $a1, $zero # copia a1 para s3 (salva size)
+       add $s1, $zero, $zero # resultado = 0
+       add $s0, $zero, $zero # i = 0
+loop:  slt $t0, $s0, $s3 # i < size?
+       beq $t0, $zero, exit # se i >= size, vai para exit
+       sll $t0, $s0, 2
+       add $t1, $s2, $t0 # calcula v[i]
+       lw $a1, 0 ($t1) # parametro para a1
+       add $a0, $s1, $zero # parametro para a0
+       jal soma # chama soma
+       add $s1, $v0, $zero # resultado = soma()
+       j loop
+exit:  lw $ra, 16($sp) # restaura ra
+       lw $s3, 12($sp) # restaura s3
+       lw $s2, 8($sp) # restaura s2
+       lw $s1, 4($sp) # restaura s1
+       lw $s0, 0($sp) # restaura s0
+       addi $sp, $sp, 20 # restaura pilha
+       jr $ra
