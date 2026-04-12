@@ -1,0 +1,150 @@
+#Qual é o código em linguagem de máquina MIPS para a instrução
+sub $t1, $t2, $t3 #?
+sub #Instrução tipo R; opcode 0, funct 22 em hex
+$t1 #registrador com n° 9 em binário
+$t2 #registrador com n° 10 em binário
+$t3 #registrador com n° 11 em binário
+
+#Formato instrução do tipo R: inst $rd, $rs, $rt
+# 6 bits: opcode
+# 5 bits: rs
+# 5 bits: rt
+# 5 bits: rd
+# 5 bits: shamt
+# 5 bits: funct
+$t1 = 9 = 01001
+$t2 = 10 = 01010
+$t3 = 11 = 01011
+# 000000.01010.01011.01001.00000.1000110
+
+
+#Qual é o código em linguagem de máquina MIPS apra a instrução
+lw $t1, 64($s0) #?
+
+lw #Instrução tipo I, opcode 23 hex = 100011 bin
+$s0 #Registrador com n° 16 em binário
+$t1 #registrador com n° 8 em dinário
+64 #immediate = 1000000
+
+#formato instrução tipo I: inst $rs, (n)$rt
+# 6 bits: opcode
+# 5 bits: rs
+# 5 bits: rt
+# 16 bits: immediate. caso necessário, completar com 0 à esquerda
+# 100011.10000.01001.0000000001000000
+
+#Qual é a instrução MIPS codificada pela seguinte sequência de bits:
+#001000.01001.01000.0000000000000001?
+#Opcode: bin->hex = 001000->8hex -> addi; instrução tipo I
+
+#rs: 01001 bin->dec = 9 dec
+#rt: 01000 bin->dec = 8 dec
+#rd: 0000000000000001 bin->dec = 1 dec
+addi $t0, $t1, 1
+
+#Qual é a instrução MIPS codificada pela seguinte sequência de bits:
+#000000.01010.01000.01001.00000.101010
+#Opcode: bin->hex = 000000->000000 hex, inst tipo R
+#01010 = 10 dec = $t2
+#01000 = 8 dec = $t0
+#01001 = 9 dec = $t1
+#00000 = shamt
+#101010 = 2A hex = slt
+
+slt $t1, $t2, $t0
+
+#Qual é a instrução MIPS codificada pela seguinte sequência de bits:
+#001000.01001.01000.0000000000000001?
+addi $t0, $t1, 1
+
+#Suponha que no fragmento de código abaixo $a0 e $a1 sejam usados para
+#a passagem de parâmetros e que estes contenham inicialmente os inteiros
+#a e b, respectivamente. Suponha que $v0 seja usado para a saída. Descreva 
+#em uma sentença o que será retornado em $v0.
+
+        add $t0, $zero, $zero #t0 = 0;
+loop:   beq $a1, $zero, finish # se a1=0, vai pra finish. Se for diferente de zero, soma a0+t0 até a1 zerar
+        add $t0, $t0, $a0 # a = t0 + a
+        sub $a1, $a1, 1 # b = b-1
+        j loop      #salta para loop. Repete t0+a0 até a1=0 ou seja; a*b
+
+finish: addi $t0, $t0, 100 # t0 = t0+100
+        add $v0, $t0, $zero # v0 = t0+0;
+
+#Resposta: a*b + 100;
+
+#Em vez de usar um multiplicador de hardware especial, é possível multiplicar usando instruções
+#shift e add. Isso é particularmente interessante quando estamos multiplicando por pequenas
+#constantes. Suponha que queiramos colocar nove vezes o valor de $s0 em $s1, ignorando qualquer
+#overflow que possa ocorrer. Mostre uma sequência mínima de instruções MIPS para fazer isso sem
+#usar uma instrução multiply.
+
+addu $s1, $s0, $zero
+sll $s0, $s0, 3
+addu $s1, $s1, $s0
+
+
+#transforme o seguinte código C em assembly MIPS:
+
+int postive(int a, int b){
+    if(addit(a,b)>0) return 1; 
+    else return 0;
+}
+int addit(int a, int b){
+    return a+b;
+}
+
+positive: addi $sp, $sp, -4 # label da função; reserva um espaço para um registrador no stack pointer
+          sw $ra, 0($sp) # aloca o return address na posição reservada no stack pointer
+          jal addit # vai para addit
+          addi $t1, $zero, 1 #t1=1
+          slt $t2, $zero, $v0 # se v0<0, t2=1
+          bne $t2, $zero, exit # se t2!=0, vai para exit
+          addi $t1, $zero, 0 # t1=0
+exit:     add $v0, $t1, $zero # v0 = t1+0 ; salva t1 em v0
+          lw $ra, 0($sp) # carrega o return address que foi armazenado no stack pointer
+          addi $sp, $sp, 4 # libera o valor alocado no stack pointer
+          jr $ra # volta para o contexto de execução original
+addit:    add $v0, $a0, $a1 # v0 = a0+a1 = a+b
+          jr $ra # volta para o contexto de execução original
+
+
+#transforme o seguinte código C em assembly mips
+int menor(int a, int b){ # a = a0, b=a1
+    if(a<b) return 1; #slt v0, a0, a1
+    else return 0; #
+}
+int conta(int v[], int r[], int s){
+    int i=0;
+    while(menor(v[i], r[i] && i<s)) i++;
+    return i;
+}
+
+menor: slt $v0, $a0, $a1
+       jr $ra
+conta: addi $sp, $sp, -16 #espaço na pilha para 4 registradores
+       sw $ra, 12($sp) # salva ra no ultimo espaço reservado
+       sw $s3, 8($sp) #salva s
+       sw $s2, 4($sp)
+       sw $s1, 0($sp)
+       add $s2, $a0, $zero #copia a0 em s2
+       add $s3, $a1, $zero #copia a1 em s3
+       add $s0, $zero, $zero # i=0
+loop:  sll $t2, $s0, 2 # $t2=i*4
+       add $t0, $s2, $t2 #calcula end. v[i]
+       add $t1, $s3, $t3 #calcula end. r[i]
+       lw $a0, 0($t0) # lê v[i]
+       lw $a1, 0($t10 # le r[i]
+       jal menor #chama menor
+       beq $v0, $zero, exit # se menor retornou 0, vai pra exit
+       slt $t0, $s0, $a2 # i é menor que s?
+       beq $t0, $zero, exit # se i>=s, vai para exit
+       addi $s0, $s0, 1 # i=i+1
+       j loop # volta para loop
+exit:  add $v0, $s0, $zero #copia i para v0
+       lw $ra, 12($sp) # restaura ra
+       lw $s3, 8($sp)
+       lw $s2, 4($sp)
+       lw $s0, 0($sp)
+       addi $sp, $sp, 16
+       jr $ra
