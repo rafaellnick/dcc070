@@ -187,3 +187,47 @@ exit:  lw $ra, 16($sp) # restaura ra
        lw $s0, 0($sp) # restaura s0
        addi $sp, $sp, 20 # restaura pilha
        jr $ra
+#1. Uma das armadilhas vistas em sala de aula estava relacionada à expectativa de que a melhoria de
+#um aspecto de um computador levasse a um aumento de desempenho em quantidade proporcional
+#ao tamanho desta melhoria. Isto pode ser verdade, mas nem sempre. Considere um computador com
+#os seguintes tempos de execução para uma aplicação: 700s para executar instruções de ponto
+#flutuante, 850s para executar instruções de inteiros, 550s para executar instruções de entrada/saída,
+#400s para executar instruções de desvio, com tempo total de execução de 2.500s. É possível reduzir
+#o tempo total de execução em 10% reduzindo apenas o tempo para executar a instrução de desvio?
+#Justifique sua resposta.
+
+t.total = 2.500s
+float = 700s
+int =m 850s
+in/out = 550s
+desvio = 400s 
+
+
+2500-250 = 2250 seg
+400-250 = 150 seg 
+R: Sim, é possível reduzir o tempo total de execução em 10 reduzindo apenas o tempo de execução
+das instruções de desvio.
+
+
+Lei de Amdahl:  
+Tempo execução final = (tempo afetado melhoria / quantidade afetada) + tempo afetado
+2250 = 400/Q + 2100 
+150 = 400/Q => 2,66 vezes
+
+#2. Considere três processadores diferentes, P1, P2 e P3, que implementam o mesmo conjunto de
+#instruções. A frequência de seus clocks e os valores médios de seus CPIs são, respectivamente,
+#2GHz, 3GHz e 4GHz e 1.2, 0.8 e 2.0. Considerando que os três processadores executam uma dada
+#aplicação em 10 segundos, determine para cada processador: 
+#a) a quantidade de ciclos executada, e
+#b) a quantidade de instruções executada.
+Tempo = Inst * CPI * TempoCiclo
+ou T = (I * CPI) / Freq. Clock
+I*CPI = ciclos
+
+a) P1: 10 = ciclos/2x10^9 Hz = 2x10^10 ciclos
+   P2: 10 = ciclos/3x10^9 Hz = 3x10^10 ciclos
+   P3: 10 = ciclos/4x10^10 Hz = 4x10^10 ciclos
+
+b) P1: ciclos = I*CPI = 2x10^10 = I * 1.2 = 1.67 x 10^10 instruções
+   P2: ciclos = 3.75 x 10^10 inst
+   P3: ciclos = 2 x 10^10 inst
