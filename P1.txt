@@ -231,3 +231,241 @@ a) P1: 10 = ciclos/2x10^9 Hz = 2x10^10 ciclos
 b) P1: ciclos = I*CPI = 2x10^10 = I * 1.2 = 1.67 x 10^10 instruções
    P2: ciclos = 3.75 x 10^10 inst
    P3: ciclos = 2 x 10^10 inst
+
+#3. Uma falácia comum é o uso da métrica MIPS (Milhões de Instruções Por Segundo) na avaliação do
+#desempenho de processadores. Por esta métrica, o processador que possui o maior MIPS é o mais
+#rápido. Verifique se isso é válido para os seguintes processadores: P1, com frequência de relógio de
+#3GHz, CPI de 1.1; e processador P2, com frequência de relógio de 2.5GHz, CPI de 1.0. Considere
+#que um mesmo programa ao ser compilado para P1 gera 3x106 instruções, enquanto ao ser
+#compilado para P2 gera 0.5x106 instruções.
+
+MIPS = Inst/tempox10^6
+
+P1: 3x10^6 / Tempox10^6 => 3x10^6/ 1.1x10^-3 = 2,7x10^9
+Tempo P1: 3x10^6 * 1.1 / 3x10^9 = 1.1x10^-3 
+
+P2: 0.5x10^6 / Tempox10^6 = 2,5x10^9
+
+Tempo P2: 0.5x10^6 * 1.0 / 2.5x10^9 = 2x10^4
+
+#4 e 5. Assuma que uma aplicação execute 600 instruções aritméticas, 200 instruções de leitura à
+#memória, 600 instruções de escrita à memória, e 100 instruções de desvio, num total de 1.500
+#instruções. Assuma que a instrução aritmética execute em 1 ciclo de clock, acessos à memória
+#(leituras e escritas) executem em 4 ciclos de clock e desvios em 2 ciclos de clock.
+#4. Qual o tempo de execução da aplicação, considerando um processador de 2GHz?
+Tempo = n° ciclos * tempo de ciclo ou Tempo = n° ciclos/Clock 
+Tempo = (600*1)+ (200*4) + (600*4) + (100*2) /2x10^9 =  2x10^-6 segundos
+
+
+#5. Se o número de instruções de leitura pode ser reduzida à metade, qual será o ganho obtido?
+Tempo alterado = 600*1 + 100*4 +  600*4 + 100*2 / 2x10^9  = 1,8x10^-6 segundos
+
+Melhoria = Tempo original / tempo alterado = 2x10^-6/1.8x10^-6 = 1.11 = 11% de ganho
+
+
+#6 a 8. Você é o diretor de projeto de um novo processador. 
+#O projeto do processador e o compilador estão completos e, agora, você precisa decidir entre produzir o projeto atual como
+#está ou gastar mais tempo para melhorá-lo. Você discute esse problema com sua equipe de engenharia de hardware e chega às 
+#seguintes opções: 
+#a) Deixar o projeto como está. Chame esse computador básico de Mbase. Ele possui uma velocidade de clock de 500MHz; e
+#b) Otimizar o hardware. A equipe de hardware afirma que pode melhorar o projeto do processador para conferir-lhe uma velocidade 
+#de clock de 600MHz. Chame esse computador de Mopt. 6 - Qual é o CPI para cada computador?
+
+Classe        Freq         CPi de Mbase    CPI de Mopt
+A             40%          2               2
+B             25%          3               2
+C             25%          3               3
+D             10%          5               4
+
+CPI = FreqInst*CPIinst
+
+Clock Mbase = 500MHz = 0.5x10^9 Hz
+Clock Mopt  = 600MHz = 0.6x10^9 Hz
+
+CPI Mbase = 0.4*2 + 0.25*3 + 0.25*3 + 0.1*5 = 2.8
+CPI Mopt = 0.4*2 + 0.25*2 + 0.25*3 + 0.1*4 = 2.45
+
+#7. Quais são os índices MIPS nativos para Mbase e Mopt?
+
+MIPS = Inst/tempox10^6
+MIPS = I / (I*CPI/Clock * 10^6) corta I => MIPS = Clock/CPI*10^6
+
+Logo
+MIPS Mbase = 0.5x10^9 / 2.8x10^6 = 178,57 MIPS 
+MIPS Mopt = 0.6x10^9/2.45x10^6 = 244,90 MIPS
+
+#8. O quanto Mopt é mais rápido que Mbase?
+Mopt/Mbase = 1.37x = 37%
+
+#9. A equipe de compiladores ouviu sobre a discussão para melhorar o computador abordado nas
+#questões 6 a 8. A equipe propõe melhorar o compilador para o computador a fim de ganhar mais
+#desempenho. Chame essa combinação do compilador melhorado e o computador básico de Mcomp. As
+#melhorias na geração de instruções para esse compilador aprimorado foram estimadas desta forma:
+
+Classe        % de inst executadas em relacao a Mbase   
+A             90%
+B             90%   
+C             85%   
+D             95%   
+
+#Por exemplo, se o computador básico executou 500 instruções da classe A, Mcomp executaria 
+#0,9*500 = 450 instruções da classe A para o mesmo programa. Qual é o CPI para Mcomp?
+
+0.9*0.4 + 0.9*0.25 + 0.85*0.25 + 0.95*0.1 = 0.8925
+
+CPI = inst/Razao
+CPI = 0.9*0.4*2 + 0.9+0.25*4 +0.85+0.25*4 +0.95*0.1*4)/0.8925 = 2.81
+
+#10. Usando os dados da questão 9, o quanto Mcomp é mais rápido do que Mbase?
+
+Tempo Mbase = Inst*CPI /Clock
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#22. Qual o código em linguagem de máquina MIPS para a instrução sub $t1, $t2, $t3
+
+sub #Instrução tipo R
+$t1 # temporário 1 - n° 9
+$t2 # temporário 2 - n° 10
+$t3 # temporário 3 - n° 11
+
+#formato sub => rd=rs-rt 
+# ou seja: sub rd, rs, rt
+
+#formato em binário: 
+#opcode(6), rs(5), rt(5), rd(5), shamt(5), funct(6)
+# sub -> opcode=000000. funct=22hex
+000000.01010.01011.01001.00000.100010
+#22. Qual o código em linguagem de máquina MIPS para a instrução: lw $t1, 64($s0) ?
+
+lw #Instrução tipo I
+$t1 # temporario 1 - n° 9
+$s0 # temporario salvo 0 - n° 16
+64 # immediate
+
+#formato em binario:
+#opcode(6), rs(5), rt(5), immediate(16)
+#lw -> opcode 23hex = 100011
+
+100011.10000.01001.0000000001000000
+
+
+#23. Qual é a instrução MIPS codificada pela seguinte sequência de bits:
+001000.01001.01000.0000000000000001
+
+001000 = 8 = addi
+01001 = 9 = t1
+01000 = 8 = t0
+000000000000001 = 1
+
+addi $t0, $t1, 1
+
+
+#24. Que instrução MIPS é representada pela seguinte sequência de bits
+000000.01010.01000.01001.00000.101010 ?
+000000 = instrução tipo R 
+01010 = 10 = t2
+01000 = 8 = t0
+01001 = 9 = t1
+00000 = shamt
+101010 = funct = 2A
+
+funct 2A = slt
+
+slt $t1, $t2, $t0 
+
+#25. Qual é a instrução MIPS codificada pela seguinte sequência de bits:
+001000.01001.01000.0000000000000001?
+
+addi $t0, $t1, 1
+
+#26. Suponha que no fragmento de código abaixo $a0 e $a1 sejam usados para a passagem de
+#parâmetros e que estes contenham inicialmente os inteiros a e b, respectivamente. Suponha que $v0
+#seja usado para a saída. Descreva em uma sentença o que será retornado em $v0.
+        add $t0, $zero, $zero # zera t0. t0=0.
+loop:   beq $a1, $zero, finish # se b = 0, vai para finish
+        add $t0, $t0, $a0 # $t0+a0 = t0+a. na primeira iteracao, t0+a, depois a+a, depois 2a+a, até b zerar. Então a*b
+        sub $a1, $a1, 1 # b--
+        j loop #repete
+finish: addi $t0, $t0, 100 # t0+100 -> (a*b)+100
+        add $v0, $t0, $zero # salva em v0 
+
+       (a*b)+100
+
+#27. Mostre a única instrução MIPS ou a sequência mínima de instruções para esta instrução em C:
+#b = 25 | a. Suponha que a corresponda ao registrador $t0 e b corresponda ao registrador $t1.
+b é igual a 25 ou a.
+ori $t1, $t0, 25
+
+#28. Em vez de usar um multiplicador de hardware especial, é possível multiplicar usando instruções
+#shift e add. Isso é particularmente interessante quando estamos multiplicando por pequenas constantes.
+#Suponha que queiramos colocar nove vezes o valor de $s0 em $s1, ignorando qualquer overflow que possa
+#ocorrer. Mostre uma sequência mínimia de instruções MIPS apra fazer isso sem usar uma instrução multiply.
+
+addu $s1, $s0, $zero #Copia $s0 para $s1(temos 1x)
+sll $t0, $s0, 3 # Desloca s0 em 3 posições à esquerda(2^8) e guarda em t0.(Agora temos 8x)
+addu $s1, $s1, $t0 # Soma s1 com t0 - Ou seja: 8x + 1x = 9x salvo em s1.
+
+#29. Transforme o seguinte código C em assembly MIPS:
+
+int positive(int a, int b){
+       if(addit(a,b)>0 return 1;
+       else return 0;
+}
+int addit(int a, int b){
+       return a+b;
+}
+
+
+addit: add $v0, $a0, $a1
+       jr $ra
+
+positive: addi $sp, $sp, -4
+          sw $ra, 0($sp)
+          jal addit
+          addi $t1, $zero, 1
+          slt $t2, $zero, $v0
+          bne $t2, $zero, exit
+          addi $t1, $zero, 0
+exit:     add $v0, $t1, $zero
+          lw $ra, 0($sp)
+          addi $sp, $sp, 4
+          jr $ra
+
+
+#30. Transforme o seguinte codigo C em assembly MIPS
+
+int menor(int a, int b){
+       if(a<b) return 1;
+       else return 0;
+}
+
+int conta(int v[], int r[], int s){
+       int i=0;
+       while(menor(v[i],r[i]) && i<s) i++;
+       return i;
+}
+
+menor: slt $v0, $a0, $a1
+       jr $ra
+
+conta: addi $sp, $sp, -16 # salva espaço na pilha para 4 registradores
+       sw $ra, 12($sp) # salva ra
+       sw $s3, 8($sp) # salva s3
+       sw $s2, 4($sp) # salva s2
+       sw $s0, 0($sp) #salva s0
+       add $s2, $a0, $zero #copia a0 para s2(salva a0)
+       add $s3, $a1, $zero # copia a1 para s3(salva a1)
+       add $s0, $zero, $zero # i=0
