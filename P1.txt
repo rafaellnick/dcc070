@@ -321,11 +321,61 @@ CPI = 0.9*0.4*2 + 0.9+0.25*4 +0.85+0.25*4 +0.95*0.1*4)/0.8925 = 2.81
 Tempo Mbase = Inst*CPI /Clock
 
 
+#13. Considere três processadores diferentes, P1, P2 e P3, que implementam o mesmo conjunto de
+#instruções. A frequência de seus clocks e os valores médios de seus CPIs são, respectivamente,
+#3GHz, 2.5GHz e 4GHz e 1.5, 1.0 e 2.2. a) Qual processador tem o melhor desempenho, expresso em
+#instruções por segundo? b) Considerando que cada processador executa um determinado programa
+#em 10 segundos, encontre b.1) o número de ciclos e b.2) o número de instruções executadas
+#por cada um deles.
 
+tempo = Inst*CPI/Clock
+Inst = Tempo*Clock/CPI
+Tempo = Ciclos/Clock
 
+b.1) Ciclos = tempo*Clock
+P1: 10 = inst*1.5/3x10^9 -> 2x10^10 instrucoes.
+Ciclos = 10 * 3x10^9 = 3x10^10 ciclos
+P2: 10 * 2.5*10^9 = 2.5x10^10 ciclos
+P3: 10 * 4x10^9 = 4x10^10 ciclos
 
+b.2) Inst = Tempo*Clock/CPI
+P1: 10 = inst*1.5/3x10^9 -> 2x10^10 instrucoes.
+P2:  X = 10*2.5x10^9/1 = 2.5x10^10 instrucoes
+P3: X = 10*4x10^9/2.2 =1.8x10^10 instrucoes 
 
+#14. Compiladores têm um impacto profundo no desempenho de uma aplicação em um processador.
+#Para um mesmo programa, dois compiladores distintos foram utilizados, A e B. O compilador A gerou
+#1 bilhão de instruções, e o compilador B gerou 1.2 bilhões de instruções. Ambos os programas
+#executaram em 1.8 segundos. Encontre o CPI médio para cada programa, considerando que o
+#computador onde o mesmo foi executado tenha clock de 1ns.
+CPI = tempo/instrucoes*TempoCiclo
 
+A: 1.8 / 1x10^9*1x10^-9 = 1.8
+B: 1.8 / 1.2x10^9*1x10^-9 = 1.5
+
+#15. Considere duas implementações distintas do mesmo ISA. Para este ISA, existem quatro classes
+#de instruções, A, B, C e D. A frequência do relógio e o CPI de cada instrução para cada processador
+#são respectivamente 2.5GHz, 2, 1.5, 2 e 1 (processador P1); 3GHz, 1, 2, 1 e 1 (processador P2).
+#Dado um programa composto por 106 instruções, das quais 10% são da classe A, 20% da classe B,
+#50% da classe C e 20% da classe D, qual implementação é a mais rápida? Justifique sua resposta
+#apresentando os cálculos.
+
+P1: 0.1*2 + 0.2*1.5 + 0.5*2 +0.2*1 = 1.7
+P2: 0.1*1 + 0.2*2 + 0.5*1 + 0.2*1 = 1.2
+
+TempoP1: (10^6x1.7)/2.5x10^9 = 6.8x10^-4
+TempoP2: (10^6x1.2/3x10^9 = 4x10^-4
+
+P2 é mais rápida.
+
+#16. Uma empresa quer tornar a execução de códigos em Java mais rápida através de suporte de
+#hardware para coleta de lixo. A coleta de lixo é atualmente responsável por 20% das instruções do
+#programa. Duas mudanças possíveis são propostas. A primeira propõe implementar suporte para
+#coleta de lixo inteiramente em hardware, com o custo de aumentar o tempo de ciclo por um fator de
+#1,2. A segunda propõe introduzir no ISA instruções de coleta de lixo, o que reduziria a metade o
+#número de instruções necessárias para realizar a coleta de lixo, mas aumentaria o tempo de ciclo por
+#um fator de 1,1. Em ambos as propostas, não haveriam alterações no valor do CPI. Qual dessas
+#opções levaria a um maior ganho de desempenho? Justifique sua resposta numericamente.
 
 
 
@@ -469,3 +519,8 @@ conta: addi $sp, $sp, -16 # salva espaço na pilha para 4 registradores
        add $s2, $a0, $zero #copia a0 para s2(salva a0)
        add $s3, $a1, $zero # copia a1 para s3(salva a1)
        add $s0, $zero, $zero # i=0
+
+
+
+
+
